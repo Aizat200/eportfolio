@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A221491 — EcoEducation e-Portfolio · SDG 7</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:        #FBF8F2;
+    --bg-alt:    #F1ECE0;
+    --ink:       #1E2A22;
+    --ink-soft:  #5C6B61;
+    --forest:    #1F4D3A;
+    --sage:      #7FA889;
+    --solar:     #F4A93B;
+    --sky:       #8FB6C7;
+    --line:      #DDD5C4;
+
+    --display: "Fraunces", serif;
+    --body:    "Inter", sans-serif;
+    --mono:    "Space Mono", monospace;
+
+    --maxw: 920px;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: var(--forest); text-decoration: none; }
+  a:hover{ text-decoration: underline; }
+  a:focus-visible, button:focus-visible{
+    outline: 2px solid var(--solar);
+    outline-offset: 2px;
+  }
+
+  img{ max-width:100%; display:block; }
+
+  /* ── Layout helpers ─────────────────────────────────────────── */
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  section{ padding: 72px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .alt{ background: var(--bg-alt); }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--forest);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom: 14px;
+  }
+  .eyebrow::before{
+    content:"";
+    display:inline-block;
+    width: 22px; height: 1px;
+    background: var(--solar);
+  }
+
+  h1,h2,h3{
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 0.4em 0;
+    letter-spacing: -0.01em;
+  }
+  h2{ font-size: clamp(28px, 4vw, 38px); }
+  h3{ font-size: 20px; font-weight: 600; }
+
+  p{ color: var(--ink-soft); margin: 0 0 1em 0; }
+  .lead{ font-size: 18px; color: var(--ink); max-width: 640px; }
+
+  /* ── Top nav + energy meter (signature element) ───────────────── */
+  header.top{
+    position: sticky; top:0; z-index: 50;
+    background: rgba(251,248,242,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row{
+    max-width: var(--maxw); margin: 0 auto; padding: 14px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap: 16px;
+    flex-wrap: wrap;
+  }
+  .brand{
+    font-family: var(--display); font-weight:700; font-size:17px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .dot{
+    width:9px; height:9px; border-radius:50%;
+    background: var(--solar);
+    box-shadow: 0 0 0 3px rgba(244,169,59,0.18);
+  }
+
+  /* energy meter: 7 cells = Lab1-5 + Project1 + Project2 */
+  .meter{
+    display:flex; gap:5px; flex:1; min-width: 220px; max-width: 380px;
+  }
+  .meter a{
+    flex:1; height: 9px; border-radius: 3px;
+    background: var(--line);
+    transition: background 0.35s ease, transform 0.2s ease;
+    position: relative;
+  }
+  .meter a.charged{ background: linear-gradient(90deg, var(--sage), var(--solar)); }
+  .meter a:hover{ transform: scaleY(1.6); }
+  .meter a::after{
+    content: attr(data-label);
+    position:absolute; bottom: 14px; left:50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 10px; color: var(--ink-soft);
+    white-space: nowrap; opacity:0; transition: opacity 0.2s;
+    pointer-events:none;
+  }
+  .meter a:hover::after{ opacity:1; }
+
+  nav.links{ display:flex; gap:18px; font-size: 13px; font-weight:500; }
+  nav.links a{ color: var(--ink-soft); }
+  nav.links a.active, nav.links a:hover{ color: var(--forest); }
+
+  @media (max-width: 720px){
+    .meter{ order:3; width:100%; max-width:none; }
+    nav.links{ display:none; }
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero{ padding-top: 88px; padding-bottom: 64px; }
+  .hero h1{
+    font-size: clamp(36px, 6vw, 56px);
+    line-height: 1.05;
+    max-width: 760px;
+  }
+  .hero .sdg-line{
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--forest);
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    display:inline-flex; align-items:center; gap:10px;
+    padding: 8px 14px; border-radius: 999px;
+    margin: 22px 0;
+  }
+  .hero .sdg-line .sun{ color: var(--solar); }
+
+  .scope{
+    font-family: var(--mono); font-size: 13px; color: var(--ink-soft);
+    display:flex; gap: 18px; flex-wrap:wrap; margin-top: 28px;
+  }
+  .scope b{ color: var(--ink); }
+
+  /* ── Cards / grids ──────────────────────────────────────────── */
+  .grid{
+    display:grid; gap: 22px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    margin-top: 32px;
+  }
+  .card{
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 24px;
+  }
+  .card .num{
+    font-family: var(--mono); font-size: 12px; color: var(--solar);
+    font-weight:700; margin-bottom: 6px; display:block;
+  }
+
+  .placeholder{
+    border: 1.5px dashed var(--line);
+    border-radius: 10px;
+    background: var(--bg-alt);
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 18px;
+    text-align: center;
+    margin: 14px 0;
+  }
+  .placeholder.video{
+    aspect-ratio: 16/9;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  iframe.video-embed{
+    width:100%; aspect-ratio:16/9; border-radius:10px; border:1px solid var(--line);
+    margin: 14px 0;
+  }
+
+  .tag-row{ display:flex; flex-wrap:wrap; gap: 8px; margin-top: 12px; }
+  .tag{
+    font-family: var(--mono); font-size: 12px;
+    background: var(--forest); color:#fff;
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .tag.alt2{ background: var(--bg-alt); color: var(--forest); border:1px solid var(--line); }
+
+  ul.clean{ padding-left: 0; margin:0; list-style:none; }
+  ul.clean li{
+    padding: 8px 0 8px 22px; position:relative; color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+  }
+  ul.clean li:last-child{ border-bottom:none; }
+  ul.clean li::before{
+    content:"›"; position:absolute; left:0; color: var(--solar); font-weight:700;
+  }
+
+  /* ── Footer ─────────────────────────────────────────────────── */
+  footer{
+    padding: 48px 0; text-align:center;
+    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+  }
+
+  .fill-edit{
+    background: rgba(244,169,59,0.16);
+    border-radius: 4px; padding: 0 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .meter a, .meter a::after{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     NAV + ENERGY METER (acts as table of contents — signature element)
+     Each cell "charges" (turns green→gold) once its section
+     has been viewed, like panels powering up as you read.
+═══════════════════════════════════════════════════════════════ -->
+<header class="top">
+  <div class="nav-row">
+    <div class="brand"><span class="dot"></span> EcoEducation Portfolio</div>
+
+    <div class="meter" id="meter">
+      <a href="#lab1" data-label="Lab 1 · UI"></a>
+      <a href="#lab2" data-label="Lab 2 · Interaction"></a>
+      <a href="#lab3" data-label="Lab 3 · Material"></a>
+      <a href="#lab4" data-label="Lab 4 · Navigation"></a>
+      <a href="#lab5" data-label="Lab 5 · Room"></a>
+      <a href="#project1" data-label="Project 1"></a>
+      <a href="#project2" data-label="Project 2"></a>
+    </div>
+
+    <nav class="links">
+      <a href="#profile">Profile</a>
+      <a href="#labs">Labs</a>
+      <a href="#projects">Projects</a>
+      <a href="#reflection">Reflection</a>
+      <a href="#skills">Skills</a>
+      <a href="#resources">Resources</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">e-Portfolio · A221491_AmirAizatBinHarith_Nelson_Project2</div>
+    <h1>EcoEducation — learning clean energy by building for it.</h1>
+    <p class="lead">
+      A Jetpack Compose Android app that teaches solar, wind, hydro, and
+      biomass energy through interactive lessons, a quiz arcade, and a
+      live map of Malaysian energy sites — built across five labs and
+      two projects.
+    </p>
+
+    <div class="sdg-line">
+      <span class="sun">●</span> SDG 7 — Affordable &amp; Clean Energy
+    </div>
+
+    <div class="scope">
+      <span><b>9</b> screens</span>
+      <span><b>4</b> technical pillars — Room · Firebase · REST API · Sensors</span>
+      <span><b>2</b> projects</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     1. STUDENT PROFILE
+═══════════════════════════════════════════════════════════════ -->
+<section id="profile">
+  <div class="wrap">
+    <div class="eyebrow">01 — Student Profile</div>
+    <h2>About me</h2>
+
+    <div class="grid" style="grid-template-columns: 200px 1fr; align-items:start;">
+      <div class="placeholder" style="aspect-ratio:1; display:flex; align-items:center; justify-content:center;">
+        Profile photo<br>(square, ~400×400)
+      </div>
+
+      <div>
+        <p><span class="fill-edit">Name:</span> Amir Aizat Bin Harith</p>
+        <p><span class="fill-edit">Matric No:</span> A221491</p>
+        <p><span class="fill-edit">Programme:</span> [Your Programme]</p>
+        <p><span class="fill-edit">Instructor:</span> [Instructor's Name]</p>
+
+        <h3 style="margin-top:24px;">Introduction</h3>
+        <p class="fill-edit">
+          A short intro about yourself — your background, what drew you to
+          mobile development, and what you hope to build with these skills.
+        </p>
+
+        <h3>Learning goals</h3>
+        <ul class="clean fill-edit">
+          <li>Goal 1 — e.g. become confident building full-stack mobile apps with Compose</li>
+          <li>Goal 2 — e.g. learn to integrate cloud and hardware features cleanly</li>
+          <li>Goal 3 — e.g. apply tech skills toward sustainability-focused projects</li>
+        </ul>
+
+        <h3>Chosen SDG</h3>
+        <p>
+          <strong>SDG 7 — Affordable and Clean Energy.</strong>
+          <span class="fill-edit">One-line statement: e.g. "I chose SDG 7 because energy
+          literacy is the first step toward adopting renewable energy at scale."</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     2. LAB SUBMISSIONS (Lab 1–5)
+═══════════════════════════════════════════════════════════════ -->
+<section id="labs" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">02 — Lab Submissions</div>
+    <h2>Labs 1 – 5</h2>
+    <p class="lead">Each lab below should include screenshots, a YouTube (Unlisted) link, and a short reflection.</p>
+
+    <div class="grid">
+
+      <div class="card" id="lab1">
+        <span class="num">LAB 01</span>
+        <h3>UI</h3>
+        <div class="placeholder">Screenshot(s) — label what each shows</div>
+        <div class="placeholder video">YouTube embed — replace VIDEO_ID below</div>
+        <!-- <iframe class="video-embed" src="https://www.youtube.com/embed/VIDEO_ID" title="Lab 1" allowfullscreen></iframe> -->
+        <p class="fill-edit">Reflection: what you learned building the UI layer.</p>
+      </div>
+
+      <div class="card" id="lab2">
+        <span class="num">LAB 02</span>
+        <h3>Interaction</h3>
+        <div class="placeholder">Screenshot(s) — label what each shows</div>
+        <div class="placeholder video">YouTube embed — replace VIDEO_ID below</div>
+        <p class="fill-edit">Reflection: what you learned about state &amp; user interaction.</p>
+      </div>
+
+      <div class="card" id="lab3">
+        <span class="num">LAB 03</span>
+        <h3>Material Design</h3>
+        <div class="placeholder">Screenshot(s) — label what each shows</div>
+        <div class="placeholder video">YouTube embed — replace VIDEO_ID below</div>
+        <p class="fill-edit">Reflection: how Material 3 components shaped your design.</p>
+      </div>
+
+      <div class="card" id="lab4">
+        <span class="num">LAB 04</span>
+        <h3>Navigation</h3>
+        <div class="placeholder">Screenshot(s) — label what each shows</div>
+        <div class="placeholder video">YouTube embed — replace VIDEO_ID below</div>
+        <p class="fill-edit">Reflection: how multi-screen navigation came together.</p>
+      </div>
+
+      <div class="card" id="lab5">
+        <span class="num">LAB 05</span>
+        <h3>Room</h3>
+        <div class="placeholder">Screenshot(s) — label what each shows</div>
+        <div class="placeholder video">YouTube embed — replace VIDEO_ID below</div>
+        <p class="fill-edit">Reflection: what local persistence unlocked for your app.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     3. PROJECT SUBMISSIONS
+═══════════════════════════════════════════════════════════════ -->
+<section id="projects">
+  <div class="wrap">
+    <div class="eyebrow">03 — Project Submissions</div>
+    <h2>Project 1 &amp; Project 2</h2>
+
+    <!-- Project 1 -->
+    <div class="card" id="project1" style="margin-top:32px;">
+      <span class="num">PROJECT 1</span>
+      <h3>EcoEducation — Foundation (5 screens)</h3>
+      <p class="fill-edit">
+        Problem statement: what SDG 7 problem Project 1 addressed, and
+        the core screens/features delivered (Lab 4 navigation + working features).
+      </p>
+      <div class="placeholder video">YouTube VSR embed — replace VIDEO_ID below</div>
+      <p>
+        <span class="fill-edit">GitHub:</span>
+        <a href="#">github.com/yourusername/project1-repo</a>
+      </p>
+      <h3>Lessons learned</h3>
+      <p class="fill-edit">What worked, what you'd change, and how it shaped Project 2's plan.</p>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="card" id="project2" style="margin-top:24px; border-color:var(--forest);">
+      <span class="num">PROJECT 2</span>
+      <h3>EcoEducation — Connected &amp; Hardware-Aware (9 screens)</h3>
+      <p>
+        Project 2 extends Project 1 with Room persistence, Firebase Firestore
+        cloud sync, live weather data from the Open-Meteo REST API, and
+        GPS + Camera sensor integration.
+      </p>
+      <div class="placeholder video">YouTube VSR embed — replace VIDEO_ID below</div>
+      <!-- <iframe class="video-embed" src="https://www.youtube.com/embed/VIDEO_ID" title="Project 2 VSR" allowfullscreen></iframe> -->
+
+      <div class="tag-row">
+        <span class="tag">Room v3</span>
+        <span class="tag">Firebase Firestore</span>
+        <span class="tag">Open-Meteo API</span>
+        <span class="tag">GPS Sensor</span>
+        <span class="tag">Camera Sensor</span>
+      </div>
+
+      <p style="margin-top:16px;">
+        <span class="fill-edit">GitHub:</span>
+        <a href="#">github.com/yourusername/project2-repo</a>
+      </p>
+
+      <h3>Lessons learned</h3>
+      <p class="fill-edit">
+        e.g. Reflect on syncing local Room data with Firestore without
+        overwriting fresh local edits, handling GPS permission flows,
+        and structuring ViewModels across screens.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     4. REFLECTION & LEARNING JOURNEY
+═══════════════════════════════════════════════════════════════ -->
+<section id="reflection" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">04 — Reflection &amp; Learning Journey</div>
+    <h2>From Lab 1 to Project 2</h2>
+
+    <div class="grid" style="grid-template-columns: 1fr 1fr;">
+      <div>
+        <h3>Growth</h3>
+        <p class="fill-edit">
+          Trace your progress: what felt hard in Lab 1 that now feels
+          natural? Which concept (state, navigation, persistence, APIs,
+          sensors) clicked the latest — and what finally made it click?
+        </p>
+      </div>
+      <div>
+        <h3>Challenges</h3>
+        <p class="fill-edit">
+          Name 1–2 specific technical struggles (e.g. Firestore sync
+          overwriting Room data, GPS permission timing, migration
+          versioning) and how you debugged them.
+        </p>
+      </div>
+      <div>
+        <h3>SDG impact</h3>
+        <p class="fill-edit">
+          How does EcoEducation move the needle — even in a small,
+          educational way — on SDG 7? Who is it for, and what would
+          you build next if you kept going?
+        </p>
+      </div>
+      <div>
+        <h3>What's next</h3>
+        <p class="fill-edit">
+          Skills you want to deepen next (e.g. Retrofit + Hilt,
+          offline-first sync strategies, testing Compose UIs).
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     5. SKILLS & TECH STACK
+═══════════════════════════════════════════════════════════════ -->
+<section id="skills">
+  <div class="wrap">
+    <div class="eyebrow">05 — Skills &amp; Tech Stack</div>
+    <h2>Tools I can use confidently</h2>
+
+    <div class="tag-row" style="margin-top:24px;">
+      <span class="tag">Kotlin</span>
+      <span class="tag">Jetpack Compose</span>
+      <span class="tag">Material 3</span>
+      <span class="tag">Navigation Compose</span>
+      <span class="tag">Room Database</span>
+      <span class="tag">Firebase Auth</span>
+      <span class="tag">Firebase Firestore</span>
+      <span class="tag">REST APIs (Open-Meteo)</span>
+      <span class="tag">OSMDroid / Maps</span>
+      <span class="tag">GPS / Location Services</span>
+      <span class="tag">CameraX / Image Capture</span>
+      <span class="tag">Coroutines &amp; Flow</span>
+      <span class="tag alt2 fill-edit">+ add your own</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     6. RESOURCES & REFERENCES
+═══════════════════════════════════════════════════════════════ -->
+<section id="resources" class="alt">
+  <div class="wrap">
+    <div class="eyebrow">06 — Resources &amp; References</div>
+    <h2>APIs, libraries &amp; acknowledgements</h2>
+
+    <ul class="clean">
+      <li><a href="https://open-meteo.com/" target="_blank">Open-Meteo API</a> — free weather data, no API key required</li>
+      <li><a href="https://osmdroid.github.io/osmdroid/" target="_blank">OSMDroid</a> — OpenStreetMap rendering for Android</li>
+      <li><a href="https://firebase.google.com/docs/firestore" target="_blank">Firebase Firestore</a> — cloud data sync</li>
+      <li><a href="https://developer.android.com/training/data-storage/room" target="_blank">Room Database</a> — local persistence</li>
+      <li class="fill-edit">AI assistance acknowledgement: e.g. "Used Claude/ChatGPT to help debug Firestore sync logic and structure ViewModels; all code reviewed and understood before submission."</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  EcoEducation e-Portfolio · SDG 7 — Affordable &amp; Clean Energy · Last updated <span class="fill-edit">[date]</span>
+</footer>
+
+<script>
+  // Highlight the active nav link + "charge" energy-meter cells
+  // for sections the user has scrolled past.
+  const meterCells = document.querySelectorAll('#meter a');
+  const navLinks   = document.querySelectorAll('nav.links a');
+  const sections   = document.querySelectorAll('section[id]');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.id;
+      const cell = document.querySelector(`#meter a[href="#${id}"]`);
+      const link = document.querySelector(`nav.links a[href="#${id}"]`);
+
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        if (link) link.classList.add('active');
+      }
+      if (entry.boundingClientRect.top < window.innerHeight && cell) {
+        cell.classList.add('charged');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
